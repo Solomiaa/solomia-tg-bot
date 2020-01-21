@@ -1,0 +1,44 @@
+Configuration:
+  package: "com.solomia"
+  name: Log4j2_Config
+  properties:
+    property:
+      name: log-path
+      value: logs
+  #------------
+  appenders:
+    Console:
+      name: Console_Appender
+      PatternLayout:
+        Pattern: "%highlight{%-5level}{FATAL=bg_red} %style{%date{yyyy-MM-dd
+                 HH:mm:ss.SSS}}{blue} %class{1}:%L - %highlight{%msg} %xEx{short}%n"
+    #file wil not be overwritten
+    File:
+      -
+        name: logFile1
+        fileName: ${log-path}/file1.log
+        PatternLayout:
+          Pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg
+                   %xEx{short}%n"
+      -
+        name: rootLogFile
+        fileName: ${log-path}/rootFile.log
+        PatternLayout:
+          Pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %class{1}:%L - %msg
+                           %xEx{short}%n"
+
+  #-------------------------------------------
+  Loggers:
+    Root:
+      level: all
+      AppenderRef:
+        - ref: rootLogFile
+          level: debug
+    Logger:
+      - name: com.solomia
+        level: all
+        AppenderRef:
+          - ref: logFile1
+            level: all
+          - ref: Console_Appender
+            level: all
